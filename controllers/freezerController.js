@@ -1,0 +1,42 @@
+import FreezerPortion from '../models/FreezerPortion.js';
+
+export const getFreezerPortions = async (req, res) => {
+  try {
+    const portions = await FreezerPortion.find().sort({ frozenAt: -1 });
+    res.status(200).json(portions);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const createFreezerPortion = async (req, res) => {
+  try {
+    const portion = await FreezerPortion.create(req.body);
+    res.status(201).json(portion);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const consumePortions = async (req, res) => {
+  try {
+    const { count } = req.body; // Nombre de portions consommées
+    const portion = await FreezerPortion.findById(req.params.id);
+
+    if (!portion) {
+      return res.status(404).json({ message: 'Portion non trouvée' });
+    }
+
+    portion.portionsCount -= count;
+
+    if (portion.portionsCount <= 0) {
+      await FreezerPortion.findByIdAndDelete(req.params.id);
+      return res.status(200).json({ message: 'Stock épuisé et supprimé' });
+    }
+
+    await portion.save();
+    res.status(200).json(portion);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
