@@ -11,7 +11,24 @@ export const getFreezerPortions = async (req, res) => {
 
 export const createFreezerPortion = async (req, res) => {
   try {
-    const portion = await FreezerPortion.create(req.body);
+    const {
+      title = req.body.name,
+      location = req.body.category,
+      supplier = '',
+      portionsCount = req.body.quantity,
+      expirationDate,
+      frozenAt
+    } = req.body;
+
+    const portion = await FreezerPortion.create({
+      title,
+      location,
+      supplier,
+      portionsCount,
+      expirationDate: expirationDate ? new Date(expirationDate) : null,
+      frozenAt
+    });
+
     res.status(201).json(portion);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -20,9 +37,25 @@ export const createFreezerPortion = async (req, res) => {
 
 export const updateFreezerPortion = async (req, res) => {
   try {
+    const {
+      title = req.body.name,
+      location = req.body.category,
+      supplier = '',
+      portionsCount = req.body.quantity,
+      expirationDate,
+      frozenAt
+    } = req.body;
+
     const portion = await FreezerPortion.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      {
+        title,
+        location,
+        supplier,
+        portionsCount,
+        expirationDate: expirationDate ? new Date(expirationDate) : null,
+        frozenAt
+      },
       { new: true, runValidators: true }
     );
 
