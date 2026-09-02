@@ -9,9 +9,10 @@ const itemSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      required: true,
-      enum: ['PETIT_DEJEUNER', 'EPICERIE_SECHE', 'FRAIS', 'CONGELE', 'BOISSONS'],
+      required: [true, 'La catégorie est requise'],
+      trim: true,
       default: 'EPICERIE_SECHE'
+      // Option 'enum' retirée pour autoriser les catégories dynamiques
     },
     quantity: { 
       type: Number, 
