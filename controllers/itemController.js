@@ -32,11 +32,33 @@ export const createItem = async (req, res) => {
   }
 };
 
+export const updateItem = async (req, res) => {
+  try {
+    const item = await Item.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!item) {
+      return res.status(404).json({ message: 'Produit non trouvé' });
+    }
+
+    res.status(200).json(item);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 // @desc    Ajuster rapidement la quantité (+1 / -1)
 // @route   PATCH /api/items/:id/quantity
 export const updateQuantity = async (req, res) => {
   try {
-    const { delta } = req.body; // ex: +1 ou -1
+    const delta = Number(req.body.delta);
+    if (!Number.isFinite(delta)) {
+      return res.status(400).json({ message: 'delta doit être un nombre' });
+    }
+
     const item = await Item.findById(req.params.id);
 
     if (!item) {

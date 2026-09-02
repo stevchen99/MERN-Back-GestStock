@@ -7,7 +7,8 @@ import { connectDB } from './config/db.js';
 
 import itemRoutes from './routes/itemRoutes.js';
 import freezerRoutes from './routes/freezerRoutes.js';
-import categoryRoutes from './routes/categoryRoutes.js'; // <-- Import ajouté ici
+import categoryRoutes from './routes/categoryRoutes.js'; 
+import supplierRoutes from './routes/supplierRoutes.js';
 
 dotenv.config();
 
@@ -71,6 +72,7 @@ app.get('/health', (req, res) => {
 app.use('/api/items', itemRoutes);
 app.use('/api/freezer', freezerRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/suppliers', supplierRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

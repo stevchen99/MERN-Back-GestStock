@@ -18,9 +18,31 @@ export const createFreezerPortion = async (req, res) => {
   }
 };
 
+export const updateFreezerPortion = async (req, res) => {
+  try {
+    const portion = await FreezerPortion.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!portion) {
+      return res.status(404).json({ message: 'Portion non trouvée' });
+    }
+
+    res.status(200).json(portion);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 export const consumePortions = async (req, res) => {
   try {
-    const { count } = req.body; // Nombre de portions consommées
+    const count = Number(req.body.count);
+    if (!Number.isInteger(count) || count <= 0) {
+      return res.status(400).json({ message: 'count doit être un entier positif' });
+    }
+
     const portion = await FreezerPortion.findById(req.params.id);
 
     if (!portion) {

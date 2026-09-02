@@ -12,7 +12,10 @@ const itemSchema = new mongoose.Schema(
       required: [true, 'La catégorie est requise'],
       trim: true,
       default: 'EPICERIE_SECHE'
-      // Option 'enum' retirée pour autoriser les catégories dynamiques
+    },
+    supplier: {
+      type: String, // Stocke le nom du fournisseur (ex: "Metro", "Promocash")
+      default: ''
     },
     quantity: { 
       type: Number, 
@@ -22,26 +25,12 @@ const itemSchema = new mongoose.Schema(
     },
     unit: { 
       type: String, 
-      default: 'unité' // kg, g, L, unité, sachet, boite
+      default: 'unité'
     },
     minQuantity: { 
       type: Number, 
       required: true, 
       default: 1 
-    },
-    location: { 
-      type: String, 
-      default: 'Réserve' // ex: "Étagère A1", "Frigo Réserve"
-    },
-    expirationDate: { 
-      type: Date 
-    },
-    isOpened: { 
-      type: Boolean, 
-      default: false 
-    },
-    openedAt: { 
-      type: Date 
     }
   },
   { timestamps: true }

@@ -22,6 +22,10 @@ const freezerPortionSchema = new mongoose.Schema(
     location: { 
       type: String, 
       default: 'Tiroir 1' 
+    },
+    supplier: {
+      type: String,
+      default: ''
     }
   },
   { timestamps: true }
