@@ -40,3 +40,18 @@ export const consumePortions = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const deleteFreezerPortion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedItem = await FreezerPortion.findByIdAndDelete(id);
+
+    if (!deletedItem) {
+      return res.status(404).json({ message: "Portion non trouvée." });
+    }
+
+    return res.status(200).json({ message: "Portion supprimée avec succès." });
+  } catch (error) {
+    return res.status(500).json({ message: "Erreur lors de la suppression.", error: error.message });
+  }
+};

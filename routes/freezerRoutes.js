@@ -2,7 +2,8 @@ import express from 'express';
 import { 
   getFreezerPortions, 
   createFreezerPortion, 
-  consumePortions 
+  consumePortions,
+  deleteFreezerPortion 
 } from '../controllers/freezerController.js';
 
 const router = express.Router();
@@ -52,6 +53,7 @@ const router = express.Router();
  */
 router.get('/', getFreezerPortions);
 router.post('/', createFreezerPortion);
+router.patch('/:id/consume', consumePortions);
 
 /**
  * @openapi
@@ -80,5 +82,23 @@ router.post('/', createFreezerPortion);
  *         description: Portions décrémentées ou supprimées si 0
  */
 router.patch('/:id/consume', consumePortions);
+
+/**
+ * @openapi
+ * /api/freezer/{id}:
+ *   delete:
+ *     summary: Supprimer une portion du congélateur
+ *     tags: [Freezer]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Portion supprimée
+ */
+router.delete('/:id', deleteFreezerPortion); // 2. Ajouter la route DELETE
 
 export default router;
