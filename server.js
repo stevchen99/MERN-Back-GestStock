@@ -40,7 +40,16 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+const swaggerHtml = swaggerUi
+  .generateHTML(swaggerDocs, { customSiteTitle: 'GestStock API' })
+  .replace('./swagger-ui.css', 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.32.14/swagger-ui.css')
+  .replace('./swagger-ui-bundle.js', 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.32.14/swagger-ui-bundle.js')
+  .replace('./swagger-ui-standalone-preset.js', 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.32.14/swagger-ui-standalone-preset.js')
+  .replace('./swagger-ui-init.js', 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.32.14/swagger-ui-init.js');
+
+app.get(['/api-docs', '/api-docs/'], (req, res) => {
+  res.type('html').send(swaggerHtml);
+});
 
 /**
  * @openapi
